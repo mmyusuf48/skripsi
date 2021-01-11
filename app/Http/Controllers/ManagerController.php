@@ -109,6 +109,17 @@ class ManagerController extends Controller
             'foto_manager' => 'required'
         ]);
 
+        if($request ->file('foto_manager')){
+            $foto = $request->file('foto_manager');
+            $file_name_foto = time().'.png';
+            $path = base_path() . "/assets/manager/";
+            $foto->move($path, $file_name_foto);
+            @unlink($path . str_replace("assets/manager/","", $request->old_img));
+            $image = 'assets/manager/'. $file_name_foto;
+        }else {
+            $image = $request->old_img;
+        }
+
         manager::where('id_manager', $manager->id_manager)
         ->update([
             'nama_manager' => $request->nama_manager,
@@ -117,7 +128,7 @@ class ManagerController extends Controller
             'alamat_manager' => $request->alamat_manager,
             'no_tlp_manager' => $request->no_tlp_manager,
             'email_manager' => $request->no_tlp_manager,
-            'foto_manager' => $request->foto_manager
+            'foto_manager' => $image
         ]);
         return redirect('/manager')->with('status','data berhasil di ubah !');
     }

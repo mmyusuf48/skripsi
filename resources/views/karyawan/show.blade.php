@@ -25,8 +25,11 @@
                         <form action="{{ $karyawan->id_karyawan}}" method="post" class="d-inline">
                         @method ('delete')
                         @csrf
-                            <button type="submit" class=" btn btn-danger mr-3"><i class="fas fa-user-minus mr-2"></i>Hapus</button>
+                            <!-- <button type="submit" class=" btn btn-danger mr-3"><i class="fas fa-user-minus mr-2"></i>Hapus</button> -->
+                        <a href="{{ url('/karyawan/'.$row->id_karyawan)}}" class="btn btn-danger btnTable" 
+                        onClick="alertDelete()">Delete</a>
                         </form?>
+
                         <a href="{{url('/karyawan')}}" class="card-link btn btn-info">
                         <i class="far fa-arrow-alt-circle-left mr-2"></i>back</a>
                     </div>

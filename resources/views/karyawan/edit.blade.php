@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col ">
             <h1 class="mt-3"><i class="fas fa-users mr-3"></i>Edit data Karyawan</h1><hr class="bg-dark">
-                 <form method="post" action="{{url('/karyawan').'/'.$karyawan->id_karyawan}}">
+                 <form method="post" action="{{url('/karyawan').'/'.$karyawan->id_karyawan}}" enctype="multipart/form-data">
                  @method ('patch')
                  @csrf
                     <div class="form-group">
@@ -56,8 +56,9 @@
                     @enderror
                     </div>
                     <div class="form-group">
-                        <label for="foto_karyawan"><b>Foto</b></label>
+                        <label for="foto_karyawan"><b>Ganti Foto</b></label>
                         <div>
+                        <input type="hidden" value="{{ $karyawan->foto_karyawan}}" name="old_img">
                             <img src="{{ url('').'/'.$karyawan->foto_karyawan }}" alt="" width="50%" class="img-thumbnail">
                         </div><br>
                         <input type="file" class="form-control @error ('foto_karyawan') is-invalid @enderror" 

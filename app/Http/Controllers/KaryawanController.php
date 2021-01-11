@@ -109,6 +109,12 @@ class KaryawanController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
+        // echo"<pre>";
+        // echo $id;
+        // print_r($request->all()); 
+        // die();
+
         $request->validate([
             'nama_karyawan' => 'required',
             'tmpt_tgl_lahir' => 'required',
@@ -117,23 +123,33 @@ class KaryawanController extends Controller
             'no_tlp_karyawan' => 'required'
         ]);
 
+        if($request ->file('foto_karyawan')){
+            $foto = $request->file('foto_karyawan');
+            $file_name_foto = time().'.png';
+            $path = base_path() . "/assets/karyawan/";
+            $foto->move($path, $file_name_foto);
+            @unlink($path . str_replace("assets/karyawan/","", $request->old_img));
+            $image = 'assets/karyawan/'. $file_name_foto;
+        }else {
+            $image = $request->old_img;
+        }
         // $foto = $request->file('foto_karyawan');
         // $file_name_foto = time().'.png';
         // $path = base_path() . "/assets/karyawan/";
 
         // $foto->move($path, $file_name_foto);
         
-        if ($request->file('foto_karyawan')){
-            $foto = $request->file('foto_karyawan')->submit('assets/karyawan');
-            $data = User::findOfail($id);
-            if ($data->foto){
-                Submit::delete('asset/'. $data->foto);
-                $data->foto = $foto;
-            }else{
-                $data->foto = $foto;
-            }
-            $data->save();
-        }
+        // if ($request->file('foto_karyawan')){
+        //     $foto = $request->file('foto_karyawan')->submit('assets/karyawan');
+        //     $data = User::findOfail($id);
+        //     if ($data->foto){
+        //         Submit::delete('asset/'. $data->foto);
+        //         $data->foto = $foto;
+        //     }else{
+        //         $data->foto = $foto;
+        //     }
+        //     $data->save();
+        // }
 
         karyawan::where('id_karyawan', $id)
         ->update([
@@ -142,7 +158,7 @@ class KaryawanController extends Controller
             'jenis_kelamin' => $request->jenis_kelamin,
             'alamat_karyawan' => $request->alamat_karyawan,
             'no_tlp_karyawan' => $request->no_tlp_karyawan,
-            'foto_karyawan' => $request->foto_karyawan
+            'foto_karyawan' => $image
         ]);
         return redirect('/karyawan')->with('status','data berhasil di ubah !');
     }
